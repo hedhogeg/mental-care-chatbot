@@ -5,5 +5,40 @@
     <title>Chatbot</title>
 </head>
 <body>
-    <h1>Mental Care Chatbot</h1>
+    <h1>Chatbot</h1>
+    <div id="chatbot">
+        <div id="chatbot-window">
+            <div id="chatbot-dialog"></div>
+        </div>
+        <form id="chatbot-form">
+            <input type="text" id="chatbot-input" placeholder="Type your message here..." autocomplete="off">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(function() {
+            var $chatWindow = $('#chatbot-window');
+            var $chatDialog = $('#chatbot-dialog');
+            var $chatForm = $('#chatbot-form');
+            var $chatInput = $('#chatbot-input');
+
+            $chatForm.on('submit', function(e) {
+                e.preventDefault();
+                var userInput = $chatInput.val();
+                $chatInput.val('');
+                $chatDialog.append('<p>You: ' + userInput + '</p>');
+                $.ajax({
+                    type: 'POST',
+                    url: '/chatbot',
+                    data: {'user_input': userInput},
+                    success: function(response) {
+                        $chatDialog.append('<p>Bot: ' + response + '</p>');
+                        $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+</html>
