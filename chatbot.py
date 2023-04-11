@@ -30,6 +30,8 @@ def get_response(user_input):
     dialogue = []
     with torch.no_grad():
         q = user_input.strip()
+        if q[-1] not in ['.', '?', '!']:
+            q += '.'
         user = '<usr>' + q + "<sys>"
         encoded = tokenizer.encode(user)
         dialogue += encoded
