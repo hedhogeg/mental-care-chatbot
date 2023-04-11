@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Chatbot</title>
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <h1>Chatbot</h1>
+    <h1>Mental Care Chatbot</h1>
+    <h2>Team 1</h2>
     <div id="chatbot">
         <div id="chatbot-window">
-            <div id="chatbot-dialog"></div>
+            <div id="chatbot-dialog">
+                <p class="sys_text">Bot : 반갑습니다. 무엇을 도와드릴까요?</p>
+            </div>
         </div>
         <form id="chatbot-form">
-            <input type="text" id="chatbot-input" placeholder="Type your message here..." autocomplete="off">
+            <input type="text" id="chatbot-input" autocomplete="off">
             <input type="submit" value="Send">
         </form>
     </div>
@@ -27,13 +31,13 @@
                 e.preventDefault();
                 var userInput = $chatInput.val();
                 $chatInput.val('');
-                $chatDialog.append('<p>You: ' + userInput + '</p>');
+                $chatDialog.append('<p class="user_text">You: ' + userInput + '</p>');
                 $.ajax({
                     type: 'POST',
                     url: '/chatbot',
                     data: {'user_input': userInput},
                     success: function(response) {
-                        $chatDialog.append('<p>Bot: ' + response + '</p>');
+                        $chatDialog.append('<p class="sys_text">Bot: ' + response + '</p>');
                         $chatWindow.scrollTop($chatWindow[0].scrollHeight);
                     }
                 });
