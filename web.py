@@ -10,8 +10,8 @@ def home():
 @app.route('/chatbot', methods=['POST'])
 def chatbot_response():
     user_input = request.form['user_input']
-    bot_response = get_response(user_input)
-    return str(bot_response)
+    bot_response, dialogue = get_response(user_input)
+    return [str(bot_response), dialogue]
 
 if __name__ == '__main__':
     app.run(debug=True)

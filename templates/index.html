@@ -26,19 +26,28 @@
             var $chatDialog = $('#chatbot-dialog');
             var $chatForm = $('#chatbot-form');
             var $chatInput = $('#chatbot-input');
+            window.localStorage.removeItem('dialog')
 
             $chatForm.on('submit', function(e) {
                 e.preventDefault();
                 var userInput = $chatInput.val();
                 $chatInput.val('');
                 $chatDialog.append('<p class="user_text">You: ' + userInput + '</p>');
+                dialog = window.localStorage.getItem('dialog')
+                if (dialog == null) {
+                    dialog = ''
+                }
+                dialog += '<usr>'
+                dialog += userInput
+                console.log(dialog)
                 $.ajax({
                     type: 'POST',
                     url: '/chatbot',
-                    data: {'user_input': userInput},
+                    data: {'user_input': dialog},
                     success: function(response) {
-                        $chatDialog.append('<p class="sys_text">Bot: ' + response + '</p>');
+                        $chatDialog.append('<p class="sys_text">Bot: ' + response[0] + '</p>');
                         $chatWindow.scrollTop($chatWindow[0].scrollHeight);
+                        window.localStorage.setItem('dialog', response[1])
                     }
                 });
             });

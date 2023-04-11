@@ -32,16 +32,16 @@ def get_response(user_input):
         q = user_input.strip()
         if q[-1] not in ['.', '?', '!']:
             q += '.'
-        user = '<usr>' + q + "<sys>"
+        user = q + "<sys>"
         encoded = tokenizer.encode(user)
         dialogue += encoded
         dialogue = check_max(dialogue)
         input_ids = torch.LongTensor(dialogue).unsqueeze(dim=0)
         output = model.generate(input_ids, max_length=128, num_beams=10, do_sample=False, top_k=50, no_repeat_ngram_size=2, temperature=0.85)
-        dialogue = list(map(int, list(output[0])[:-1]))
+        dialogue = tokenizer.decode(list(output[0])[:-1])
         idx = torch.where(output[0]==tokenizer.encode('<sys>')[0])
         idx = idx[0][-1] + 1
         chatbot = tokenizer.decode(output[0][idx:-1])
     
-    return chatbot.strip()
+    return chatbot.strip(), dialogue
 
